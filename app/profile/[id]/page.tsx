@@ -1,14 +1,21 @@
-import { ProjectInterface, UserProfile } from '@/common.types';
+import { UserProfile } from '@/common.types';
 import ProfilePage from '@/components/ProfilePage';
 import { getUserProject } from '@/lib/actions'
-import React from 'react'
+import React, { use } from 'react'
 
-const UserProfile = async( {params : {id}} : {params : {id : string}}) => {
-    const result = await getUserProject(id,100) as { user : UserProfile};
+type Props = {
+  params : {
+    id : string;
+  }
+}
 
+const UserProfile = async( {params} : Props) => {
+    const result = await getUserProject(params.id,100) as { user : UserProfile};
+    console.log("User Profile")
     if(!result.user){
         <p className='no-result-text'>Failed to fetch user data</p>
     }
+    console.log(result.user.projects.edges.length);
   return (
     <ProfilePage user={result?.user} />
   )
